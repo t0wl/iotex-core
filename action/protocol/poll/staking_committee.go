@@ -8,6 +8,7 @@ package poll
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/pkg/errors"
@@ -78,6 +79,13 @@ func (sc *stakingCommittee) DelegatesByHeight(height uint64) (state.CandidateLis
 	if err != nil {
 		return nil, err
 	}
+
+	for _, v := range cand {
+		fmt.Println("======= ether votes")
+		fmt.Println("address:", v.Address)
+		fmt.Println("votes:", v.Votes)
+		fmt.Printf("name: %x\n", v.CanName)
+	}
 	// convert to epoch start height
 	epochHeight := sc.getEpochHeight(sc.getEpochNum(height))
 	if sc.hu.IsPre(config.Bering, epochHeight) {
@@ -117,5 +125,13 @@ func (sc *stakingCommittee) mergeDelegates(list state.CandidateList, votes VoteT
 			merged = append(merged, clone)
 		}
 	}
+
+	for _, v := range merged {
+		fmt.Println("======= total votes")
+		fmt.Println("address:", v.Address)
+		fmt.Println("votes:", v.Votes)
+		fmt.Printf("name: %x\n", v.CanName)
+	}
+
 	return merged
 }
